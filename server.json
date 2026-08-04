@@ -3,18 +3,17 @@
   "name": "xyz.tereno/tereno",
   "title": "Tereno on Base",
   "description": "Check a Base contract, an unsigned transaction or a public web page before you act on it. Returns a verdict with the evidence behind it, the limits of that evidence and the block it stops being valid at. Catalog, pricing and receipt lookups are free; answers are paid per call with x402 in USDC from $0.001, and reusing an answer another agent already paid for costs less.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "websiteUrl": "https://www.tereno.xyz",
   "repository": {
-    "url": "https://github.com/RobMartello/tereno",
-    "source": "github",
-    "subfolder": "clients/tereno-mcp"
+    "url": "https://github.com/tereno-xyz/tereno-mcp",
+    "source": "github"
   },
   "packages": [
     {
       "registryType": "npm",
       "identifier": "tereno-mcp",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "transport": {
         "type": "stdio"
       }

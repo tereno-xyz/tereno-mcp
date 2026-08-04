@@ -1,0 +1,15 @@
+# DNS authentication for the MCP registry generates its signing key in this
+# directory. This repository is public: a committed key.pem hands over the
+# ability to publish under the tereno.xyz namespace, and rotating it means
+# editing DNS. Never relax these two lines.
+*.pem
+key.pem
+
+node_modules/
+*.tgz
+
+.env
+.env.*
+!.env.example
+
+.DS_Store

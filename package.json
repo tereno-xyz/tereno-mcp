@@ -1,6 +1,7 @@
 {
   "name": "tereno-mcp",
-  "version": "0.1.0",
+  "version": "0.1.1",
+  "mcpName": "xyz.tereno/tereno",
   "description": "MCP server for Tereno on Base: check a contract, a transaction or a web page before you act on it. Free catalog, pricing and receipt tools; paid answers settle per call with x402 in USDC.",
   "type": "module",
   "bin": {
@@ -30,8 +31,10 @@
   "homepage": "https://www.tereno.xyz",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/RobMartello/tereno.git",
-    "directory": "clients/tereno-mcp"
+    "url": "git+https://github.com/tereno-xyz/tereno-mcp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/tereno-xyz/tereno-mcp/issues"
   },
   "license": "MIT",
   "publishConfig": {
