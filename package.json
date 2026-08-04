@@ -1,0 +1,40 @@
+{
+  "name": "tereno-mcp",
+  "version": "0.1.0",
+  "description": "MCP server for Tereno on Base: check a contract, a transaction or a web page before you act on it. Free catalog, pricing and receipt tools; paid answers settle per call with x402 in USDC.",
+  "type": "module",
+  "bin": {
+    "tereno-mcp": "bin/tereno-mcp.mjs"
+  },
+  "files": [
+    "bin",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "modelcontextprotocol",
+    "x402",
+    "base",
+    "agent",
+    "ai-agent",
+    "smart-contract",
+    "contract-security",
+    "onchain",
+    "usdc",
+    "web-to-markdown"
+  ],
+  "homepage": "https://www.tereno.xyz",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RobMartello/tereno.git",
+    "directory": "clients/tereno-mcp"
+  },
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  }
+}
