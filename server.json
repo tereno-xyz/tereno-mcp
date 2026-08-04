@@ -1,0 +1,29 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "xyz.tereno/tereno",
+  "title": "Tereno on Base",
+  "description": "Check a Base contract, an unsigned transaction or a public web page before you act on it. Returns a verdict with the evidence behind it, the limits of that evidence and the block it stops being valid at. Catalog, pricing and receipt lookups are free; answers are paid per call with x402 in USDC from $0.001, and reusing an answer another agent already paid for costs less.",
+  "version": "0.1.0",
+  "websiteUrl": "https://www.tereno.xyz",
+  "repository": {
+    "url": "https://github.com/RobMartello/tereno",
+    "source": "github",
+    "subfolder": "clients/tereno-mcp"
+  },
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "tereno-mcp",
+      "version": "0.1.0",
+      "transport": {
+        "type": "stdio"
+      }
+    }
+  ],
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://www.tereno.xyz/api/mcp"
+    }
+  ]
+}
