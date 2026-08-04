@@ -1,17 +1,53 @@
+<div align="center">
+
+<img src="images/logo.png" alt="Tereno" width="150" />
+
 # tereno-mcp
 
-MCP server for [Tereno](https://www.tereno.xyz) on Base. Check a contract, a
-transaction or a web page before you act on it, and get a verdict with the
-evidence behind it, the limits of that evidence, and the block it stops being
-valid at.
+### 🛡️ Check before you act — an MCP server for Base, over x402
 
-Three tools are free and need no wallet. The rest are paid per call with
-[x402](https://x402.org) in USDC on Base, from $0.001.
+**Ask what it costs before you pay for it.** Free catalog, pricing and receipt
+tools work with no wallet and no signup; paid answers settle per call in USDC,
+and reusing an answer another agent already paid for costs less.
 
-## Install
+<br/>
 
-Claude Desktop, Claude Code, Cursor, Cline, Windsurf and anything else that
-speaks MCP over stdio:
+[![npm version](https://img.shields.io/npm/v/tereno-mcp?style=for-the-badge&color=0052FF&logo=npm)](https://www.npmjs.com/package/tereno-mcp)
+[![MCP](https://img.shields.io/badge/MCP-registry-8B5CF6?style=for-the-badge)](https://registry.modelcontextprotocol.io)
+[![Base](https://img.shields.io/badge/Base-0052FF?style=for-the-badge&logo=coinbase&logoColor=white)](https://base.org)
+[![x402](https://img.shields.io/badge/x402%20%C2%B7%20USDC-2775CA?style=for-the-badge)](https://www.x402.org)
+
+[![license](https://img.shields.io/npm/l/tereno-mcp?style=flat-square&color=green)](./LICENSE)
+[![no dependencies](https://img.shields.io/badge/dependencies-none-brightgreen?style=flat-square)](./package.json)
+[![free tier](https://img.shields.io/badge/free%20tools-no%20wallet-success?style=flat-square)](#-free-no-wallet-needed)
+
+```bash
+npx -y tereno-mcp
+```
+
+</div>
+
+---
+
+## ⚡ Why this exists
+
+An agent that reads a contract, signs a transaction or scrapes a page is acting
+on information it cannot verify. Most tools answer *what* something is. None of
+them tell you how long that answer stays true.
+
+`tereno-mcp` puts [Tereno](https://www.tereno.xyz) inside any MCP client. Every
+paid answer comes back with the evidence behind it, the limits of that evidence,
+and **the block it stops being valid at**.
+
+- **No API key, no signup.** The agent's wallet *is* the identity.
+- **Price before payment.** `tereno_price` tells you the cost and whether the
+  answer already exists, without a wallet and without committing to anything.
+- **Cheaper when shared.** Deterministic answers are reused across agents: the
+  first caller pays to compute, everyone after pays the reuse price.
+
+## 🚀 Install
+
+Add it to any MCP client — Claude Desktop, Claude Code, Cursor, Cline, Windsurf:
 
 ```json
 {
@@ -24,62 +60,109 @@ speaks MCP over stdio:
 }
 ```
 
-Nothing else to configure. Restart the client and the free tools work.
+Restart the client. Nothing else to configure — the free tools work immediately.
 
-## Free tools
+## 🆓 Free, no wallet needed
 
-| Tool | Answers |
-| --- | --- |
-| `tereno_catalog` | Everything Tereno can answer, the price tiers, how long each answer stays valid, and whether it is shared or private. |
-| `tereno_price` | What one specific call would cost right now, and whether the answer already exists. No wallet, no commitment. |
-| `tereno_receipt` | What a settled call actually charged: tier, list price, credit applied, price paid, and whether it settled on chain. |
+| Tool | The question it answers |
+|---|---|
+| 📖 `tereno_catalog` | What can Tereno answer, what does it cost, how long does each answer stay valid? |
+| 🏷️ `tereno_price` | What would *this exact call* cost right now — and does the answer already exist? |
+| 🧾 `tereno_receipt` | What did a settled call actually charge: tier, list price, credit applied, price paid? |
 
-`tereno_price` is the one worth knowing about. Deterministic answers are shared,
-so an answer another agent already paid for costs less while it is still fresh:
+`tereno_price` is the one worth knowing about. It names the reuse tier out loud:
 
 ```
-cacheStatus: "hit"     someone already computed this and it is fresh — reuse price
-cacheStatus: "partial" the durable half survived — only the expired part is recomputed
-cacheStatus: "miss"    nothing to reuse — this call computes it, and the next asker pays less
+hit      another agent already paid to compute this and it is still fresh
+partial  the durable half survived; only the expired part is recomputed
+miss     nothing to reuse — this call computes it, and the next asker pays less
 ```
 
-## Paid tools
+## 💳 Paid per call
 
-`contract_guard`, `contract_change`, `contract_interface`, `token_metadata`,
-`chain_snapshot`, `evidence_artifact`, `web_compile`, `transaction_intent_guard`.
+| Tool | Price | The question it answers |
+|---|---:|---|
+| 🚦 `transaction_intent_guard` | $0.005 | **Is this safe to sign?** Simulation, gas, balance and allowance deltas, unlimited-approval flags |
+| 🛡️ `contract_guard` | $0.001–3 | Is this contract safe to interact with? (code, proxy, pause) |
+| 🕵️ `contract_change` | $0.001–2 | Did it change since last look? (rug-pull-after-audit detector) |
+| 🪙 `token_metadata` | $0.001–3 | What token is this, really? (name, symbol, decimals, supply) |
+| 🧬 `contract_interface` | $0.001–2 | ERC-20? NFT? Proxy? One bounded probe |
+| ⛽ `chain_snapshot` | $0.001–2 | Latest Base block, base fee and suggested gas, zero parameters |
+| 📄 `web_compile` | $0.001–5 | Public URL → bounded Markdown with resolved links, citations and a reusable artifact |
+| 🔎 `evidence_artifact` | $0.001–3 | Can this public artifact be reused? Provenance, field validity, recomputation input |
+| 🤝 `demand_pledge` | free | Name a capability you would pay for. Credit only after the same wallet pays for it later |
 
-Calling one returns a `402` carrying the payment challenge in `error.data.paymentRequired`.
-Sign it and retry with a `PAYMENT-SIGNATURE` header to get the answer. If your
-agent already has an x402 wallet, that retry is the normal flow and nothing here
-needs a private key.
+Calling a paid tool returns a `402` carrying the payment challenge in
+`error.data.paymentRequired`. Sign it and retry with a `PAYMENT-SIGNATURE`
+header. If your agent already has an x402 wallet, that retry is the normal flow
+and **this package never touches a private key**.
 
-`transaction_intent_guard` is never cached, shared or resold: an unsigned
-transaction is intent, and it stays with the wallet that paid for it.
+> 🔒 `transaction_intent_guard` is never cached, shared or resold. An unsigned
+> transaction is intent, and it stays with the wallet that paid for it.
 
-## Configuration
+## ⚙️ Configuration
 
-| Variable | Default | Purpose |
-| --- | --- | --- |
-| `TERENO_WALLET` | none | Base address announced before payment, so a challenge can be bound to the wallet that will settle it. Optional; every free tool works without it. |
-| `TERENO_BASE_URL` | `https://www.tereno.xyz` | Point at another deployment. |
+| Env | Default | Purpose |
+|---|---|---|
+| `TERENO_WALLET` | — | Base address announced before payment, so a challenge can be bound to the wallet that will settle it. Optional. |
+| `TERENO_BASE_URL` | `https://www.tereno.xyz` | Point at another Tereno deployment. |
 | `TERENO_TIMEOUT_MS` | `45000` | Upstream request timeout. |
 
-No private key is ever read, stored or transmitted by this package.
+## 🔐 What this package does and does not do
 
-## What this package is
-
-A stdio transport in front of the hosted endpoint at
-`https://www.tereno.xyz/api/mcp`. Messages are forwarded verbatim, so the tool
-list, the prices and the payment challenge come from the same place an HTTP
-agent sees, and this package does not need a release when a capability changes.
+It is a **stdio transport** in front of the hosted endpoint at
+[`/api/mcp`](https://www.tereno.xyz/api/mcp). Messages are forwarded verbatim, so
+the tool list, the prices and the payment challenge all come from the same place
+an HTTP agent sees — and this package needs no release when a capability changes.
 
 The one thing it translates is payment: over HTTP the challenge arrives in a
 response header, and stdio has no headers, so it is folded into the JSON-RPC
 error payload where a client can still reach it.
 
-If your client supports remote MCP servers, you can skip this package and point
-it at `https://www.tereno.xyz/api/mcp` directly.
+**No private key is ever read, stored or transmitted.** There are no
+dependencies, and the whole thing is one readable file — [read it](./bin/tereno-mcp.mjs)
+before you let it run on your machine.
 
-## Licence
+If your client supports remote MCP servers, skip this package and point it
+straight at `https://www.tereno.xyz/api/mcp`.
 
-MIT
+## 🌱 How it stays cheap — the cooperative layer
+
+Tereno is a **shared-cache coordination layer**, not just an API. The first agent
+to pay for a given piece of verified work seeds it for the whole network; every
+later agent that reuses that answer pays less, and the seeder earns a small,
+non-transferable credit that discounts its own future calls.
+
+Safety is a public good with a private cost. By making the first computation earn
+from every reuse, the network turns *"I paid to check this contract"* into *"I
+lowered the price of checking it for everyone, and my own checks got cheaper."*
+
+> The honest fine print: rewards are **non-transferable credits**, capped per
+> artifact. They fund your agent's budget, they are not yield.
+
+Discovery, scoring, reputation, pricing and the global cache live in the closed
+Tereno backend. This server and its SDK
+([`tereno-client`](https://www.npmjs.com/package/tereno-client)) are the public,
+open interface to it.
+
+## 🤝 Support & community
+
+- 💬 **Questions / setup** → [Tereno Discord](https://discord.gg/YsgGSRBxn)
+- 🐛 **Bugs** → [issues](https://github.com/tereno-xyz/tereno-mcp/issues) · ⚠️ never paste private keys or `.env`
+- 🔒 **Vulnerabilities** → [report privately](https://github.com/tereno-xyz/tereno-mcp/security/advisories/new)
+
+## 🔗 Links
+
+[Live catalog](https://www.tereno.xyz/api/v1/capabilities) ·
+[OpenAPI](https://www.tereno.xyz/openapi.yaml) ·
+[MCP registry entry](https://registry.modelcontextprotocol.io/v0/servers?search=tereno) ·
+[plugin-tereno for ElizaOS](https://github.com/RobMartello/plugin-tereno) ·
+[tereno-client SDK](https://www.npmjs.com/package/tereno-client)
+
+---
+
+<div align="center">
+
+**[tereno.xyz](https://www.tereno.xyz)** · Verdicts before signatures, for agents on Base.
+
+</div>
