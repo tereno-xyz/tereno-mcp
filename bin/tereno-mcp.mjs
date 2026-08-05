@@ -7,15 +7,24 @@
 // the payment challenge all come from the same place an HTTP agent sees, and
 // this package never has to be redeployed when a capability changes.
 //
-// The one thing it does translate is payment. Over HTTP the 402 challenge
-// arrives in a response header; stdio has no headers, so the challenge is
-// folded into the JSON-RPC error payload where an MCP client can still reach it.
+// The one thing it does translate is payment, and the translation is lossy in a
+// way worth naming. Over HTTP the 402 challenge arrives in a response header and
+// the caller retries with a PAYMENT-SIGNATURE header. stdio has no headers in
+// either direction: the challenge can still be folded into the JSON-RPC error
+// payload, but the signature has nowhere to come back through. So a paid tool
+// cannot be settled by retrying it here, and saying otherwise sends an agent
+// round a loop with no exit.
+//
+// What it does instead is hand the call off: the challenge names the capability's
+// own invoke URL, which is payable by any x402 HTTP client and returns the same
+// payload this tool would have. The 402 below says that explicitly and points at
+// that URL rather than at this endpoint.
 
 import { createInterface } from "node:readline";
 
 // Travels in the user-agent, and the demand panel counts installs by it, so it
 // has to track the published version rather than drift from it.
-const VERSION = "0.1.2";
+const VERSION = "0.1.4";
 const BASE_URL = (process.env.TERENO_BASE_URL || "https://www.tereno.xyz").replace(/\/+$/, "");
 const ENDPOINT = BASE_URL + "/api/mcp";
 const WALLET = process.env.TERENO_WALLET?.trim();
@@ -31,6 +40,33 @@ function send(message) {
 
 function errorFor(id, code, message, data) {
   return { jsonrpc: "2.0", id: id ?? null, error: data === undefined ? { code, message } : { code, message, data } };
+}
+
+// Reads the offer out of the base64 x402 challenge. This is not reimplementing
+// payment: it is the only way to tell the agent *where* to pay, because the
+// payable resource is the capability's invoke URL and never this JSON-RPC
+// endpoint. Everything is optional on purpose, so a challenge whose shape we do
+// not recognise degrades to "the challenge carries it" instead of throwing.
+function readOffer(challenge) {
+  if (!challenge) return null;
+  try {
+    const decoded = JSON.parse(Buffer.from(challenge, "base64").toString("utf8"));
+    const accepts = Array.isArray(decoded?.accepts) ? decoded.accepts[0] : null;
+    const url = typeof decoded?.resource?.url === "string" ? decoded.resource.url : null;
+    if (!url && !accepts) return null;
+    return {
+      url,
+      network: accepts?.network ?? null,
+      asset: accepts?.asset ?? null,
+      // Smallest unit of `asset`, not USD. Naming it loosely is how an agent
+      // ends up signing six orders of magnitude more than it meant to.
+      amountInAssetUnits: accepts?.amount ?? null,
+      payTo: accepts?.payTo ?? null,
+      maxTimeoutSeconds: accepts?.maxTimeoutSeconds ?? null,
+    };
+  } catch {
+    return null;
+  }
 }
 
 async function forward(request) {
@@ -56,12 +92,28 @@ async function forward(request) {
 
     if (response.status === 402) {
       const challenge = response.headers.get(PAYMENT_REQUIRED_HEADER);
+      const offer = readOffer(challenge);
+      const where = offer?.url
+        ? `send the signed request to data.resource (${offer.url})`
+        : "send the signed request to the resource URL named inside that challenge";
       return errorFor(request.id, 402,
-        "Payment required. This tool is paid per call with x402 in USDC on Base. "
-        + "Sign the challenge in data.paymentRequired and retry with a PAYMENT-SIGNATURE header, "
-        + "or call tereno_price first to see what it costs. The free tools (tereno_catalog, "
-        + "tereno_price, tereno_receipt) need no payment and no wallet.",
-        { paymentRequired: challenge, resource: ENDPOINT });
+        "Payment required, and this transport cannot carry the payment. stdio has no "
+        + "headers, so retrying this tool call with a PAYMENT-SIGNATURE is not possible "
+        + "and no argument on this tool accepts one. Settle it over HTTP instead: sign "
+        + `data.paymentRequired with an x402 client and ${where}. That returns the same `
+        + "payload this tool would have returned, including the receipt, and it is billed "
+        + "once. Free here, needing no wallet and no payment: tereno_catalog, tereno_price, "
+        + "tereno_receipt, tereno_evidence_reference and demand_pledge. Call tereno_price "
+        + "first if you only wanted to know the cost.",
+        {
+          paymentRequired: challenge,
+          // The payable resource, which is the capability's invoke URL. This
+          // used to carry the MCP endpoint, which is not payable and is not
+          // what an x402 client should be pointed at.
+          resource: offer?.url ?? null,
+          offer,
+          mcpEndpoint: ENDPOINT,
+        });
     }
 
     const text = await response.text();

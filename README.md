@@ -93,9 +93,21 @@ miss     nothing to reuse — this call computes it, and the next asker pays les
 | 🤝 `demand_pledge` | free | Name a capability you would pay for. Credit only after the same wallet pays for it later |
 
 Calling a paid tool returns a `402` carrying the payment challenge in
-`error.data.paymentRequired`. Sign it and retry with a `PAYMENT-SIGNATURE`
-header. If your agent already has an x402 wallet, that retry is the normal flow
-and **this package never touches a private key**.
+`error.data.paymentRequired`, the payable resource URL in `error.data.resource`,
+and the terms (network, asset, amount, `payTo`) in `error.data.offer`.
+
+**Over stdio you cannot pay by retrying the tool call.** stdio has no headers in
+either direction, so there is nowhere for a `PAYMENT-SIGNATURE` to travel back
+through. Two ways to settle, both of which leave **this package never touching a
+private key**:
+
+- **Pay the resource over HTTP.** Sign `error.data.paymentRequired` with your
+  x402 client and send the signed request to `error.data.resource`. It returns
+  the same payload the tool would have, receipt included, billed once.
+- **Use the remote server instead of this package.** If your client supports
+  remote MCP, point it at `https://www.tereno.xyz/api/mcp`. That transport does
+  have headers, so signing the challenge and retrying the same tool call is the
+  normal flow and everything stays inside MCP.
 
 > 🔒 `transaction_intent_guard` is never cached, shared or resold. An unsigned
 > transaction is intent, and it stays with the wallet that paid for it.
@@ -116,9 +128,13 @@ It is a **stdio transport** in front of the hosted endpoint at
 the tool list, the prices and the payment challenge all come from the same place
 an HTTP agent sees — and this package needs no release when a capability changes.
 
-The one thing it translates is payment: over HTTP the challenge arrives in a
-response header, and stdio has no headers, so it is folded into the JSON-RPC
-error payload where a client can still reach it.
+The one thing it translates is payment, and the translation is lossy in one
+direction. Over HTTP the challenge arrives in a response header and the caller
+retries with a `PAYMENT-SIGNATURE` header. stdio has neither, so the challenge is
+folded into the JSON-RPC error payload where a client can still reach it, while
+the signature has no way back in. That is why a paid call is settled against the
+resource URL rather than by retrying the tool, and why a client that speaks
+remote MCP should prefer the hosted endpoint.
 
 **No private key is ever read, stored or transmitted.** There are no
 dependencies, and the whole thing is one readable file — [read it](./bin/tereno-mcp.mjs)

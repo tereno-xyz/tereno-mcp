@@ -3,7 +3,7 @@
   "name": "xyz.tereno/tereno",
   "title": "Tereno on Base",
   "description": "Check a Base contract, transaction or web page before you act. Free pricing, paid per call in USDC.",
-  "version": "0.1.2",
+  "version": "0.1.4",
   "websiteUrl": "https://www.tereno.xyz",
   "repository": {
     "url": "https://github.com/tereno-xyz/tereno-mcp",
@@ -13,7 +13,7 @@
     {
       "registryType": "npm",
       "identifier": "tereno-mcp",
-      "version": "0.1.2",
+      "version": "0.1.4",
       "transport": {
         "type": "stdio"
       }
