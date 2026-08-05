@@ -15,10 +15,13 @@ import { createInterface } from "node:readline";
 
 // Travels in the user-agent, and the demand panel counts installs by it, so it
 // has to track the published version rather than drift from it.
-const VERSION = "0.1.1";
+const VERSION = "0.1.2";
 const BASE_URL = (process.env.TERENO_BASE_URL || "https://www.tereno.xyz").replace(/\/+$/, "");
 const ENDPOINT = BASE_URL + "/api/mcp";
 const WALLET = process.env.TERENO_WALLET?.trim();
+// Stable opaque id, supplied by the operator. The hosted server hashes it only
+// when evidence received from another agent is resolved; it is never a wallet.
+const EVIDENCE_INSTALLATION_ID = process.env.TERENO_EVIDENCE_INSTALLATION_ID?.trim();
 const TIMEOUT_MS = Number(process.env.TERENO_TIMEOUT_MS || 45_000);
 const PAYMENT_REQUIRED_HEADER = "payment-required";
 
@@ -42,6 +45,7 @@ async function forward(request) {
     // Identifies the caller before payment, so a challenge can be bound to the
     // wallet that will settle it. Optional: everything free works without it.
     if (WALLET) headers["x-agent-wallet"] = WALLET;
+    if (EVIDENCE_INSTALLATION_ID) headers["x-tereno-evidence-installation"] = EVIDENCE_INSTALLATION_ID;
 
     const response = await fetch(ENDPOINT, {
       method: "POST", headers, body: JSON.stringify(request), signal: controller.signal,

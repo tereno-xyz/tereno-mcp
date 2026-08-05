@@ -107,6 +107,7 @@ and **this package never touches a private key**.
 | `TERENO_WALLET` | — | Base address announced before payment, so a challenge can be bound to the wallet that will settle it. Optional. |
 | `TERENO_BASE_URL` | `https://www.tereno.xyz` | Point at another Tereno deployment. |
 | `TERENO_TIMEOUT_MS` | `45000` | Upstream request timeout. |
+| `TERENO_EVIDENCE_INSTALLATION_ID` | — | Optional stable random id for this MCP installation. It is hashed only when resolving evidence received from another agent; never use a wallet or secret. |
 
 ## 🔐 What this package does and does not do
 

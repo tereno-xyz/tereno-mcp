@@ -1,6 +1,6 @@
 {
   "name": "tereno-mcp",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "mcpName": "xyz.tereno/tereno",
   "description": "MCP server for Tereno on Base: check a contract, a transaction or a web page before you act on it. Free catalog, pricing and receipt tools; paid answers settle per call with x402 in USDC.",
   "type": "module",
