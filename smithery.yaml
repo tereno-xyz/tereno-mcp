@@ -1,0 +1,25 @@
+# Smithery configuration for Tereno on Base
+# See: https://smithery.ai/docs/config
+startCommand:
+  type: stdio
+  configSchema:
+    type: object
+    properties:
+      wallet:
+        type: string
+        title: "Agent Wallet Address"
+        description: "Optional EVM wallet address on Base for tracking quotes, receipts, and seeder reuse dividends."
+      baseUrl:
+        type: string
+        title: "Tereno Base URL"
+        default: "https://www.tereno.xyz"
+        description: "Base URL for the Tereno endpoint (defaults to https://www.tereno.xyz)."
+  commandFunction: |-
+    (config) => ({
+      command: 'npx',
+      args: ['-y', 'tereno-mcp'],
+      env: {
+        ...(config.wallet ? { TERENO_WALLET: config.wallet } : {}),
+        ...(config.baseUrl ? { TERENO_BASE_URL: config.baseUrl } : {})
+      }
+    })
