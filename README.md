@@ -31,19 +31,22 @@ npx -y tereno-mcp
 
 ## ⚡ Why this exists
 
-An agent that reads a contract, signs a transaction or scrapes a page is acting
-on information it cannot verify. Most tools answer *what* something is. None of
-them tell you how long that answer stays true.
+An agent that interacts with a Base token or contract, or trades a prediction-market
+proposition, is acting on information it cannot verify. Most tools answer *what*
+something is. None of them tell you how long that answer stays true.
 
 `tereno-mcp` puts [Tereno](https://www.tereno.xyz) inside any MCP client. Every
 paid answer comes back with the evidence behind it, the limits of that evidence,
-and **the block it stops being valid at**.
+and **the block or timestamp it stops being valid at**.
 
 - **No API key, no signup.** The agent's wallet *is* the identity.
-- **Price before payment.** `tereno_price` tells you the cost and whether the
-  answer already exists, without a wallet and without committing to anything.
-- **Cheaper when shared.** Deterministic answers are reused across agents: the
-  first caller pays to compute, everyone after pays the reuse price.
+- **Price & seeder dividend before payment.** `tereno_price` tells you the cost,
+  whether the answer already exists, and how much your wallet earns in reuse
+  dividends if you seed it — without a wallet and without committing to anything.
+- **Positive-sum when shared.** Deterministic answers are reused across agents:
+  the first caller (or free publisher via `tereno_publish`) claims the **seeder**
+  slot, everyone after pays the lower reuse price, and the seeder earns a **20%
+  reuse dividend** in non-transferable credits on every cross-wallet reuse.
 
 ## 🚀 Install
 
@@ -64,33 +67,32 @@ Restart the client. Nothing else to configure — the free tools work immediatel
 
 ## 🆓 Free, no wallet needed
 
-| Tool | The question it answers |
+| Tool / Resource | The question it answers |
 |---|---|
-| 📖 `tereno_catalog` | What can Tereno answer, what does it cost, how long does each answer stay valid? |
-| 🏷️ `tereno_price` | What would *this exact call* cost right now — and does the answer already exist? |
+| 📜 `tereno_agent_rules`<br/>*(resource: `tereno://agent-rules.md`)* | **How does the cooperative economy work?** Rules of engagement for AI agents: cache sharing ($0.01 vs $0.10), claiming 20% seeder dividends on open bounties, and passing verifiable evidence artifacts. |
+| 📖 `tereno_catalog` | What can Tereno answer, what does it cost, how long does each answer stay valid, and where is the open bounty queue? |
+| 🏷️ `tereno_price` | What would *this exact call* cost right now — does the answer already exist, and what is the seeder dividend? |
 | 🧾 `tereno_receipt` | What did a settled call actually charge: tier, list price, credit applied, price paid? |
+| 🔗 `tereno_evidence_reference` | Resolve a portable `sha256:` evidence reference received from another agent. |
+| 🌱 `tereno_publish` | Publish a contract bytecode fingerprint you computed yourself (audited by recomputation) to claim its seeder slot and earn reuse dividends + optional ERC-8004 on-chain attestation. |
+| 🤝 `demand_pledge` | Name a capability you would pay for. Credit is released only after the same wallet settles it later. |
 
-`tereno_price` is the one worth knowing about. It names the reuse tier out loud:
+`tereno_price` names both the reuse tier and the `seederEconomics` out loud:
 
 ```
-hit      another agent already paid to compute this and it is still fresh
-partial  the durable half survived; only the expired part is recomputed
-miss     nothing to reuse — this call computes it, and the next asker pays less
+hit      another agent already paid to compute this and it is still fresh ($0.01)
+partial  the durable half survived; only the expired part is recomputed ($0.02)
+miss     nothing to reuse — settling this call makes your wallet the seeder, and every later cross-wallet reuse returns a 20% credit dividend to you
 ```
 
-## 💳 Paid per call
+## 💳 Paid per call (x402 in USDC on Base)
 
-| Tool | Price | The question it answers |
+| Tool | Price (hit → miss) | The question it answers |
 |---|---:|---|
-| 🚦 `transaction_intent_guard` | $0.005 | **Is this safe to sign?** Simulation, gas, balance and allowance deltas, unlimited-approval flags |
-| 🛡️ `contract_guard` | $0.001–3 | Is this contract safe to interact with? (code, proxy, pause) |
-| 🕵️ `contract_change` | $0.001–2 | Did it change since last look? (rug-pull-after-audit detector) |
-| 🪙 `token_metadata` | $0.001–3 | What token is this, really? (name, symbol, decimals, supply) |
-| 🧬 `contract_interface` | $0.001–2 | ERC-20? NFT? Proxy? One bounded probe |
-| ⛽ `chain_snapshot` | $0.001–2 | Latest Base block, base fee and suggested gas, zero parameters |
-| 📄 `web_compile` | $0.001–5 | Public URL → bounded Markdown with resolved links, citations and a reusable artifact |
-| 🔎 `evidence_artifact` | $0.001–3 | Can this public artifact be reused? Provenance, field validity, recomputation input |
-| 🤝 `demand_pledge` | free | Name a capability you would pay for. Credit only after the same wallet pays for it later |
+| 🪙 `token_metadata` | $0.01 – $0.03 | What Base ERC-20 token is this? (`name`, `symbol`, `decimals` shared for 7d + fresh `totalSupply` at current block) |
+| ⛽ `chain_snapshot` | $0.002 – $0.005 | What is the current state of Base? Latest block number, timestamp, base fee and suggested gas fees, zero parameters |
+| 🛡️ `contract_guard` | $0.02 – $0.10 | Is this Base contract safe to interact with? (executable code, EIP-1967 proxy & pause signals, bounded verdict) |
+| 📊 `prediction_evidence` | $0.01 – $0.05 | Sourced, machine-readable evidence supporting or contradicting a prediction-market proposition, with provenance |
 
 Calling a paid tool returns a `402` carrying the payment challenge in
 `error.data.paymentRequired`, the payable resource URL in `error.data.resource`,
@@ -108,9 +110,6 @@ private key**:
   remote MCP, point it at `https://www.tereno.xyz/api/mcp`. That transport does
   have headers, so signing the challenge and retrying the same tool call is the
   normal flow and everything stays inside MCP.
-
-> 🔒 `transaction_intent_guard` is never cached, shared or resold. An unsigned
-> transaction is intent, and it stays with the wallet that paid for it.
 
 ## ⚙️ Configuration
 

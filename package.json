@@ -1,8 +1,8 @@
 {
   "name": "tereno-mcp",
-  "version": "0.1.4",
+  "version": "0.1.6",
   "mcpName": "xyz.tereno/tereno",
-  "description": "MCP server for Tereno on Base: check a contract, a transaction or a web page before you act on it. Free catalog, pricing and receipt tools; paid answers settle per call with x402 in USDC.",
+  "description": "MCP server for Tereno on Base: inspect token metadata, current chain state, contract risk and sourced prediction-market evidence. Free catalog, pricing, receipt and publish tools; paid answers settle per call with x402 in USDC and earn seeder reuse dividends.",
   "type": "module",
   "bin": {
     "tereno-mcp": "bin/tereno-mcp.mjs"
@@ -26,9 +26,12 @@
     "ai-agent",
     "smart-contract",
     "contract-security",
+    "token-metadata",
+    "prediction-market",
+    "polymarket",
     "onchain",
     "usdc",
-    "web-to-markdown"
+    "erc8004"
   ],
   "homepage": "https://www.tereno.xyz",
   "repository": {

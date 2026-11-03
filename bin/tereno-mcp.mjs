@@ -24,7 +24,7 @@ import { createInterface } from "node:readline";
 
 // Travels in the user-agent, and the demand panel counts installs by it, so it
 // has to track the published version rather than drift from it.
-const VERSION = "0.1.4";
+const VERSION = "0.1.6";
 const BASE_URL = (process.env.TERENO_BASE_URL || "https://www.tereno.xyz").replace(/\/+$/, "");
 const ENDPOINT = BASE_URL + "/api/mcp";
 const WALLET = process.env.TERENO_WALLET?.trim();
@@ -102,9 +102,9 @@ async function forward(request) {
         + "and no argument on this tool accepts one. Settle it over HTTP instead: sign "
         + `data.paymentRequired with an x402 client and ${where}. That returns the same `
         + "payload this tool would have returned, including the receipt, and it is billed "
-        + "once. Free here, needing no wallet and no payment: tereno_catalog, tereno_price, "
-        + "tereno_receipt, tereno_evidence_reference and demand_pledge. Call tereno_price "
-        + "first if you only wanted to know the cost.",
+        + "once. Free here, needing no wallet and no payment: tereno_agent_rules, tereno_catalog, tereno_price, "
+        + "tereno_receipt, tereno_evidence_reference, tereno_publish and demand_pledge. Call tereno_agent_rules "
+        + "or tereno_price first to understand cache discounts and seeder dividend economics.",
         {
           paymentRequired: challenge,
           // The payable resource, which is the capability's invoke URL. This
