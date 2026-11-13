@@ -2,8 +2,8 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "xyz.tereno/tereno",
   "title": "Tereno on Base",
-  "description": "Check a Base contract, transaction or web page before you act. Free pricing, paid per call in USDC.",
-  "version": "0.1.4",
+  "description": "Pre-action verification for Base: 6 canonical capabilities, honeypot detection, cabal clusters, and ERC-8183 task evaluations. Free testing tier, paid per call in USDC via x402.",
+  "version": "0.1.7",
   "websiteUrl": "https://www.tereno.xyz",
   "repository": {
     "url": "https://github.com/tereno-xyz/tereno-mcp",
@@ -13,7 +13,7 @@
     {
       "registryType": "npm",
       "identifier": "tereno-mcp",
-      "version": "0.1.4",
+      "version": "0.1.7",
       "transport": {
         "type": "stdio"
       }
