@@ -179,7 +179,7 @@ open interface to it.
 [Live catalog](https://www.tereno.xyz/api/v1/capabilities) ·
 [OpenAPI](https://www.tereno.xyz/openapi.yaml) ·
 [MCP registry entry](https://registry.modelcontextprotocol.io/v0/servers?search=tereno) ·
-[plugin-tereno for ElizaOS](https://github.com/RobMartello/plugin-tereno) ·
+[plugin-tereno for ElizaOS](https://github.com/tereno-xyz/plugin-tereno) ·
 [tereno-client SDK](https://www.npmjs.com/package/tereno-client)
 
 ---
