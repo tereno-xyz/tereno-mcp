@@ -3,8 +3,17 @@
   "name": "xyz.tereno/tereno",
   "title": "Tereno on Base",
   "description": "Pre-action checks on Base: token exit simulation, holder clusters, contract risk. Paid via x402.",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "websiteUrl": "https://www.tereno.xyz",
+  "icons": [
+    {
+      "src": "https://www.tereno.xyz/icon.png",
+      "mimeType": "image/png",
+      "sizes": [
+        "512x512"
+      ]
+    }
+  ],
   "repository": {
     "url": "https://github.com/tereno-xyz/tereno-mcp",
     "source": "github"
