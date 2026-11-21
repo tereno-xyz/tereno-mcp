@@ -69,7 +69,7 @@ Restart the client. Nothing else to configure — the free tools work immediatel
 
 | Tool / Resource | The question it answers |
 |---|---|
-| 📜 `tereno_agent_rules`<br/>*(resource: `tereno://agent-rules.md`)* | **How does the cooperative economy work?** Rules of engagement for AI agents: cache sharing ($0.01 vs $0.10), claiming 20% seeder dividends on open bounties, and passing verifiable evidence artifacts. |
+| 📜 `tereno_agent_rules`<br/>*(resource: `tereno://agent-rules.md`)* | **How does the cooperative economy work?** Rules of engagement for AI agents: cache sharing ($0.01 vs up to $0.07 cold), claiming 20% seeder dividends on open bounties, and passing verifiable evidence artifacts. |
 | 📖 `tereno_catalog` | What can Tereno answer, what does it cost, how long does each answer stay valid, and where is the open bounty queue? |
 | 🏷️ `tereno_price` | What would *this exact call* cost right now — does the answer already exist, and what is the seeder dividend? |
 | 🧾 `tereno_receipt` | What did a settled call actually charge: tier, list price, credit applied, price paid? |
@@ -95,10 +95,10 @@ miss     nothing to reuse — settling this call makes your wallet the seeder, a
 | Tool | Price (hit → miss) | The question it answers |
 |---|---:|---|
 | 🪙 `token_metadata` | $0.01 – $0.03 | What Base ERC-20 token is this? (`name`, `symbol`, `decimals` shared for 7d + fresh `totalSupply` at current block) |
-| ⛽ `chain_snapshot` | $0.002 – $0.005 | What is the current state of Base? Latest block number, timestamp, base fee and suggested gas fees, zero parameters |
-| 🛡️ `contract_guard` | $0.02 – $0.10 | Is this Base contract safe to interact with? (executable code, EIP-1967 proxy & pause signals, zero-extra-RPC honeypot check) |
-| 🚀 `token_launch_guard` | $0.02 – $0.08 | **Can I get out after I get in?** Simulates sell/exit via `eth_call`, verifies DEX LP depth and burn/lock status, inspects owner powers (hidden fees, mint, blacklist traps) |
-| 👥 `token_holders_guard` | $0.02 – $0.08 | **Who controls this token?** Top 10 holder concentration and deployer-funded cabal Sybil clusters via ETH funding origin graphs |
+| ⛽ `chain_snapshot` | $0.01 – $0.02 | What is the current state of Base? Latest block number, timestamp, base fee and suggested gas fees, zero parameters |
+| 🛡️ `contract_guard` | $0.01 – $0.03 | Is this Base contract safe to interact with? (executable code, EIP-1967 proxy & pause signals, zero-extra-RPC honeypot check) |
+| 🚀 `token_launch_guard` | $0.02 – $0.07 | **Can I get out after I get in?** Simulates sell/exit via `eth_call`, verifies DEX LP depth and burn/lock status, inspects owner powers (hidden fees, mint, blacklist traps) |
+| 👥 `token_holders_guard` | $0.01 – $0.04 | **Who controls this token?** Top 10 holder concentration and deployer-funded cabal Sybil clusters via ETH funding origin graphs |
 | 📊 `prediction_evidence` | $0.01 – $0.05 | Sourced, machine-readable evidence supporting or contradicting a prediction-market proposition, with UMA dispute classification |
 
 Calling a paid tool returns a `402` carrying the payment challenge in

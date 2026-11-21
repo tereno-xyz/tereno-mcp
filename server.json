@@ -3,7 +3,7 @@
   "name": "xyz.tereno/tereno",
   "title": "Tereno on Base",
   "description": "Pre-action verification for Base: 6 canonical capabilities, honeypot detection, cabal clusters, and ERC-8183 task evaluations. Free testing tier, paid per call in USDC via x402.",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "websiteUrl": "https://www.tereno.xyz",
   "repository": {
     "url": "https://github.com/tereno-xyz/tereno-mcp",
@@ -13,7 +13,7 @@
     {
       "registryType": "npm",
       "identifier": "tereno-mcp",
-      "version": "0.1.7",
+      "version": "0.1.8",
       "transport": {
         "type": "stdio"
       }
