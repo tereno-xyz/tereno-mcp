@@ -21,6 +21,8 @@ and reusing an answer another agent already paid for costs less.
 [![no dependencies](https://img.shields.io/badge/dependencies-none-brightgreen?style=flat-square)](./package.json)
 [![free tier](https://img.shields.io/badge/free%20tools-no%20wallet-success?style=flat-square)](#-free-no-wallet-needed)
 
+[![Glama MCP server](https://glama.ai/mcp/servers/tereno-xyz/tereno-mcp/badges/score.svg)](https://glama.ai/mcp/servers/tereno-xyz/tereno-mcp)
+
 ```bash
 npx -y tereno-mcp
 ```
