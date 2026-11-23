@@ -24,7 +24,7 @@ import { createInterface } from "node:readline";
 
 // Travels in the user-agent, and the demand panel counts installs by it, so it
 // has to track the published version rather than drift from it.
-const VERSION = "0.1.10";
+const VERSION = "0.1.11";
 const BASE_URL = (process.env.TERENO_BASE_URL || "https://www.tereno.xyz").replace(/\/+$/, "");
 const ENDPOINT = BASE_URL + "/api/mcp";
 const WALLET = process.env.TERENO_WALLET?.trim();
