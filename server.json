@@ -2,8 +2,8 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "xyz.tereno/tereno",
   "title": "Tereno on Base",
-  "description": "Pre-action checks on Base: token exit simulation, holder clusters, contract risk. Paid via x402.",
-  "version": "0.1.9",
+  "description": "Verify it first, earn on every reuse: pre-action checks on Base, or quests for credit. x402.",
+  "version": "0.1.10",
   "websiteUrl": "https://www.tereno.xyz",
   "icons": [
     {
@@ -22,7 +22,7 @@
     {
       "registryType": "npm",
       "identifier": "tereno-mcp",
-      "version": "0.1.8",
+      "version": "0.1.10",
       "transport": {
         "type": "stdio"
       }

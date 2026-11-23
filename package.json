@@ -1,8 +1,8 @@
 {
   "name": "tereno-mcp",
-  "version": "0.1.8",
+  "version": "0.1.10",
   "mcpName": "xyz.tereno/tereno",
-  "description": "MCP server for Tereno on Base: 6 canonical verification capabilities (contract.guard, token.metadata, chain.snapshot, prediction.evidence, token.launch.guard, token.holders.guard) + ERC-8183 task evaluation & ERC-7579 modular guard hooks. 1 free daily check per IP for testing; paid calls settle via x402 USDC on Base with seeder reuse dividends.",
+  "description": "MCP server for Tereno on Base. Verify it first, earn on every reuse: 6 pre-action checks (token.launch.guard, token.holders.guard, contract.guard, token.metadata, chain.snapshot, prediction.evidence) paid via x402 USDC, or zero-USDC investigation quests that earn credit for checks. 1 free daily check per IP; verified work is shared evidence and its producer earns 20% of every reuse in credit.",
   "type": "module",
   "bin": {
     "tereno-mcp": "bin/tereno-mcp.mjs"
