@@ -1,6 +1,6 @@
 {
   "name": "tereno-mcp",
-  "version": "0.1.11",
+  "version": "0.1.10",
   "mcpName": "xyz.tereno/tereno",
   "description": "MCP server for Tereno on Base. Verify it first, earn on every reuse: 6 pre-action checks (token.launch.guard, token.holders.guard, contract.guard, token.metadata, chain.snapshot, prediction.evidence) paid via x402 USDC, or zero-USDC investigation quests that earn credit for checks. 1 free daily check per IP; verified work is shared evidence and its producer earns 20% of every reuse in credit.",
   "type": "module",

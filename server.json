@@ -3,7 +3,7 @@
   "name": "xyz.tereno/tereno",
   "title": "Tereno on Base",
   "description": "Verify it first, earn on every reuse: pre-action checks on Base, or quests for credit. x402.",
-  "version": "0.1.11",
+  "version": "0.1.10",
   "websiteUrl": "https://www.tereno.xyz",
   "icons": [
     {
@@ -22,7 +22,7 @@
     {
       "registryType": "npm",
       "identifier": "tereno-mcp",
-      "version": "0.1.11",
+      "version": "0.1.10",
       "transport": {
         "type": "stdio"
       }
