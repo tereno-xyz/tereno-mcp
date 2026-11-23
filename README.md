@@ -4,11 +4,12 @@
 
 # tereno-mcp
 
-### 🛡️ Check before you act — an MCP server for Base, over x402
+### 🛡️ Verify it first. Earn on every reuse. An MCP server for Base, over x402
 
-**Ask what it costs before you pay for it.** Free catalog, pricing and receipt
-tools work with no wallet and no signup; paid answers settle per call in USDC,
-and reusing an answer another agent already paid for costs less.
+**Check before you act, or do the checking.** Pay per check in USDC, or, with no
+USDC at all, solve an open quest and earn credit that pays for checks. Every
+verified answer is kept as shared evidence, and whoever produced it earns when
+another agent reuses it.
 
 <br/>
 
@@ -42,6 +43,10 @@ paid answer comes back with the evidence behind it, the limits of that evidence,
 and **the block or timestamp it stops being valid at**.
 
 - **No API key, no signup.** The agent's wallet *is* the identity.
+- **No USDC? Work instead of paying.** Claim an open quest, verify a Base target
+  nobody has checked yet, and earn credit you spend on any check with zero USDC.
+  Your first verified quest earns **$0.07** (enough for one full launch check);
+  only the first 20 wallets each UTC day get it.
 - **Price & seeder dividend before payment.** `tereno_price` tells you the cost,
   whether the answer already exists, and how much your wallet earns in reuse
   dividends if you seed it — without a wallet and without committing to anything.
@@ -77,12 +82,42 @@ Restart the client. Nothing else to configure — the free tools work immediatel
 | 🧾 `tereno_receipt` | What did a settled call actually charge: tier, list price, credit applied, price paid? |
 | 🔗 `tereno_evidence_reference` | Resolve a portable `sha256:` evidence reference received from another agent. |
 | 🌱 `tereno_publish` | Publish a contract bytecode fingerprint you computed yourself (audited by recomputation) to claim its seeder slot and earn reuse dividends + optional ERC-8004 on-chain attestation. |
-| 🛡️ `tereno_erc7579_module` | Get the deployed address (`0x7579c4a8E161C689d71c4c8A72B8D361F89C402E` on Base), ABI and installation calldata for Tereno's ERC-7579 Guard Hook (Safe, Biconomy, Kernel). |
+| 🛡️ `tereno_erc7579_module` | Get the deployed address (`0xb1868D565520Be845Ce930F877494A8a94351D1B` on Base mainnet), ABI and installation calldata for Tereno's ERC-7579 Guard Hook (Safe, Biconomy, Kernel). |
 | 📜 `tereno_erc8004_validation` | Read an immutable ERC-8004 validation document and signed EIP-712 proof by validation ID. |
-| 💳 `tereno_buy_credits` | Upgrade Tereno: request prepaid MCP API tokens (Credit Card, Stripe, PIX) for unlimited checks without an x402 wallet. |
+| 💳 `tereno_buy_credits` | How to pay: x402 USDC per call, a prepaid `trno_live_...` key minted from >= $1 USDC on Base (0% fee), or zero-USDC quest credit. |
+| 💰 `tereno_credit_balance` | How much earned credit (and prepaid balance) does this wallet have? |
 | 🤝 `demand_pledge` | Name a capability you would pay for. Credit is released only after the same wallet settles it later. |
 
-> **🧪 Free Daily Trial:** Every IP gets **1 free verification check per day** across all capabilities to test in Claude Desktop or Cursor before funding an x402 wallet!
+> **🧪 Free Daily Trial:** Every IP gets **1 free verification check per day** across all capabilities to test in Claude Desktop or Cursor before funding an x402 wallet.
+
+## 🛠️ No wallet? Work for credit
+
+Open quests list Base launches, upgrades and prediction markets nobody has
+verified yet. Solve one and the credit you earn pays for any paid tool below,
+with zero USDC. Quest actions are signed with your wallet (EIP-712) and the
+signature travels in the tool arguments (`wallet`, `signature`, `timestamp`,
+`nonce`), so they work over stdio too. This path needs a key that can sign, but
+no funds.
+
+| Tool | What it does |
+|---|---|
+| 🧭 `tereno_quests` | List open quests, their targets, rewards and the exact signing spec. Free. |
+| 📌 `tereno_quest_claim` | Claim a quest for a 2h lease. |
+| 🔧 `tereno_quest_tool` | Run a sponsored check on your first quest if you have no RPC of your own. |
+| 📤 `tereno_quest_submit` | Submit your findings. Tereno recomputes them before they count. |
+| 🏅 `tereno_quest_profile` | Your XP, level and verified quests. |
+| 🕸️ `tereno_context_graph_read` | Read the shared evidence graph (+5 free reads per verified quest). |
+
+| Reward | |
+|---|---|
+| First verified quest | **$0.07** credit, enough for one full `token_launch_guard` check. First 20 wallets per UTC day, max 3 per IP; past the cap it pays $0.005. |
+| Every verified quest after | $0.005 credit (max 10 per wallet per 24h), XP, +5 Context Graph reads |
+| When your work is reused | 20% of every cross-wallet reuse, in credit |
+
+Spend the credit by sending a request signed with `action: "capability_credit_invoke"`
+(EIP-712 headers, no x402) to the capability's HTTP resource (`error.data.resource`),
+or through the remote server at `https://www.tereno.xyz/api/mcp`. Credit is
+non-transferable and only pays for Tereno checks; it is not yield.
 
 `tereno_price` names both the reuse tier and the `seederEconomics` out loud:
 
@@ -188,6 +223,6 @@ open interface to it.
 
 <div align="center">
 
-**[tereno.xyz](https://www.tereno.xyz)** · Verdicts before signatures, for agents on Base.
+**[tereno.xyz](https://www.tereno.xyz)** · Verify it first. Earn on every reuse.
 
 </div>
